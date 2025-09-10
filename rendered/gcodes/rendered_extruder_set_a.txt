@@ -1,0 +1,10 @@
+Layer num: 0
+
+
+layer count 0
+filament vol 
+filament mass 
+filament cost 
+time (s) 0
+time 00:00:00
+box size minx  maxx  miny  maxy 

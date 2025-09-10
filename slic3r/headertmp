@@ -1,0 +1,18 @@
+	$varheader = array(
+    	    "printer_options",
+	    "filament_options",
+	    "speed_options",
+	    "acceleration_options",
+	    "print_options",
+	    "quality_options",
+	    "support_material_options",
+	    "retraction_options",
+	    "retraction_options_multiextruder",
+	    "cooling_options",
+	    "skirt_options",
+	    "transform_options",
+	    "sequential_printing_options",
+	    "miscellaneous_options",
+	    "flow_options",
+	    "multiple_extruder_options");
+

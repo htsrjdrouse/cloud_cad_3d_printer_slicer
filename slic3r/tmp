@@ -1,0 +1,105 @@
+function scanprusagcode($filenm){
+$fl = "../rendered/gcodes/rendered_".preg_replace("/.stl$/", ".gcode",$filenm);
+$fll = "../rendered/gcodes/rendered_".preg_replace("/.stl$/", ".txt",$filenm);
+$lry = array();
+$layers = array();
+$dfile = fopen($fll, "w"); 
+$xcoord = array();
+$ycoord = array();
+$layerstats = array();
+$ct = 0;
+$tx = array();
+$ty = array();
+$ly = "";
+$tsec = 0;
+$lyct = 0;
+$chrcnt = 0;
+$chrcntstr = "";
+fwrite($dfile, "Layer num: ".$lyct.PHP_EOL);
+
+
+if ($file = fopen($fl, "r")) {
+    while(!feof($file)) {
+	    $line = fgets($file);
+	    $chrcnt = $chrcnt + strlen($line);
+	    if (!preg_match("/^.*LAYER_CHANGE.*$/", $line)){
+    	      array_push($layers, $line);
+	      if(preg_match("/^G1.*F.*/", $line)){
+	          preg_match("/^G1.*F(.*)$/", $line,$aa);
+		  $feed = preg_replace("/;.*/", "", $aa[1]);
+	      }
+	      if(preg_match("/^G1.*X.*Y.*E.*/", $line)){
+	       preg_match("/^G1.*X(.*)Y(.*) .*$/", $line,$aa);
+	       array_push($xcoord,floatval($aa[1]));
+	       array_push($tx,$aa[1]);
+	       array_push($ycoord,floatval($aa[2]));
+	       array_push($ty,$aa[2]);
+	       $ct = $ct + 1;
+	       if ($ct == 2){ 
+	        $ly = $ly."bx".$tx[0]."ex".$tx[1]."by".$ty[0]."ey".$ty[1]."f".$feed.PHP_EOL;
+                $len = sqrt(pow((floatval($tx[0])-floatval($tx[1])),2)+pow((floatval($ty[0])-floatval($ty[1])),2));
+		$sec = $len / (intval($feed)*0.0167);
+		$tsec = $tsec + $sec;
+	        $ct = 0; 
+		$tx = array();
+		$ty = array();
+	       }
+	      }
+	    } else {
+		    if (preg_match("/;Z:.*/", $line)){
+		     preg_match("/;Z:(.*)$/", $line, $ag);
+		     $prevlayers = $layers;
+		     $zstring = $zstring.round($ag[1],3).",";
+		     $chrcntstr = $chrcntstr.$chrcnt.",";
+		    }
+		    if (count($xcoord)>0){
+		     $lyct = $lyct + 1;
+		     fwrite($dfile, "Layer num: ".($lyct).PHP_EOL);
+		     fwrite($dfile,$ly);
+		    }
+		    $ly = "";
+		    $layers = array();
+		    array_push($layers, $line);
+	    }
+    }
+    $chrcntstr = $chrcntstr.$chrcnt.",";
+    if (count($xcoord)>0){
+      fwrite($dfile, "Layer num: ".($lyct+1).PHP_EOL);
+      fwrite($dfile,$ly);
+    }
+    array_push($lry, $layers);
+    $layers = array();
+    fclose($file);
+}
+
+
+
+
+
+
+
+
+ ellipse(<?=floatval($_SESSION['holes']['X'])-(floatval($_SESSION['holes']['diameter'])/2)+(($x)*floatval($_SESSION['holes']['columnsp']))*4?>,<?=floatval($_SESSION['holes']['Y'])-floatval(($_SESSION['holes']['diameter']/2))-(($y)*floatval($_SESSION['holes']['rowsp']))*4?>,<?=floatval($_SESSION['holes']['diameter'])*4?>,<?=floatval($_SESSION['holes']['diameter'])*4?>); 
+ ellipse(<?=floatval($_SESSION['holes']['rX'])-((floatval($_SESSION['holes']['diameter'])*4)/2)+(($x)*floatval($_SESSION['holes']['columnsp']))*4?>,<?=floatval($_SESSION['holes']['rY'])-(floatval($_SESSION['holes']['diameter'])/2)-(($y)*floatval($_SESSION['holes']['rowsp']))*4?>,<?=floatval($_SESSION['holes']['diameter'])*4?>,<?=floatval($_SESSION['holes']['diameter'])*4?>);
+
+
+<? if(isset($_SESSION['line'])){ ?>
+  stroke(30,30,86);
+<? foreach($_SESSION['line'] as $k=>$v){
+ if (($k > 0)){
+?>
+	line(<?=$v['rX']?>,<?=$v['rY']?>,<?=$_SESSION['line'][$k-1]['rX']?>,<?=$_SESSION['line'][$k-1]['rY']?>);
+<?
+ }
+  }
+ } ?>
+
+}
+
+  foreach($line as $hk=>$hv) { ?>
+      <? if($hk>0){ ?>
+	 <font size=1> <? if($hk==1){echo ($kl+1)."."; }else{echo "&nbsp;&nbsp;&nbsp;";}?> BX<?=$hv['X']?> EX<?=$line[$hk-1]['X']?><br> &nbsp;&nbsp;&nbsp;&nbsp;BY<?=$hv['Y']?> EY<?=$line[$hk-1]['Y']?></font><br>
+      <? } ?>
+<?    }
+
+

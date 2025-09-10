@@ -1,0 +1,30 @@
+imagingblock_lid();
+//imagingblock_lid
+module imagingblock_lid(){
+ translate([0,0,-30])difference(){
+ color("lime")union(){
+ translate([-3-20-5,-3,-3+40])cube([40+8+10,((77*1.2)+8),5]);
+ translate([-3-20-5-50-35,-3+35,-3+40])cube([40+8+10+50+35,30,4]);
+ translate([-3-20-5-50-35+20,-3+35+10,-3+40])cube([40+8+10+50+35-65,10,4+5]);
+ }
+ translate([11-80-35,38,23])cylinder(r=4.7/2,h=50,$fn=30);
+ translate([11-80-35,37+18,23])cylinder(r=4.7/2,h=50,$fn=30);
+
+ translate([20-22-60,1+7-2,23+8])rotate([0,90,0])cylinder(r=2.9/2,h=250,$fn=30);
+ translate([20-22-60,1+7+80,23+8])rotate([0,90,0])cylinder(r=2.9/2,h=250,$fn=30);
+ translate([0,0,-27]){
+ translate([20-22-60,1+7-2,23+8])rotate([0,90,0])cylinder(r=2.9/2,h=250,$fn=30);
+ translate([20-22-60,1+7+80,23+8])rotate([0,90,0])cylinder(r=2.9/2,h=250,$fn=30);
+ }
+ translate([20,1,23])cylinder(r=4.9/2,h=50,$fn=30);
+ translate([20,1+93,23])cylinder(r=4.9/2,h=50,$fn=30);
+ translate([-39,0,0]){
+ translate([20,1,23])cylinder(r=4.9/2,h=50,$fn=30);
+ translate([20,1+93,23])cylinder(r=4.9/2,h=50,$fn=30);
+ }
+ translate([11+7-5-2,16-4-2,38-3])cube([13,72+3,30]);
+ translate([-51,24,13])rotate([0,90,0])cylinder(r=3.8/2,h=40,$fn=30);
+ translate([-51,24+45/2+0.4,22])rotate([0,90,0])cylinder(r=13.5/2,h=40,$fn=30);
+ translate([-51,24+45,13])rotate([0,90,0])cylinder(r=3.8/2,h=40,$fn=30);
+ }
+}

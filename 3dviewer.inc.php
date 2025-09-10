@@ -1,0 +1,52 @@
+<? //session_start(); ?>
+<? //include('blabber.inc.php');?>
+<? //include('tcaro.php'); ?>
+<? //include('jscadlib.php') ?>
+
+<?
+
+?>
+<?
+  $dir = "uploads/";
+//
+/*
+  if(!isset($_SESSION['fromstl'])){ $_SESSION['fromstl'] = 1; } 
+  if($_SESSION['fromstl'] == 1){ 
+	  $pid = preg_replace("/stl$|STL$/", "jscad", $_SESSION['objectsactive']);
+  } else {
+    $pid = $_SESSION['jscadfilename'];
+  }
+*/
+$pid = $_SESSION['jscadfilename'];
+ ?>
+ <?
+ $jsontrack = json_decode(file_get_contents('uploads/active.json'), true);
+ unlink("uploads/".$jsontrack['active']);
+ $pid = date('Ymds').'.jscad';
+ $jsontrack['active'] = $pid;
+ file_put_contents('uploads/active.json', json_encode($jsontrack));
+ $myfile = fopen("uploads/".$pid, "w");
+ fwrite($myfile, $_SESSION['jscadcontents']); 
+ fclose($myfile);
+
+
+  //$dir = "3dviewer/cellprom/";
+//$pid = "vvv.jscad";
+//
+ //$pid = "013.jscad";
+ $id = $dir.$pid; //.'?'.date('l jS \of F Y h:i:s A');
+?>
+<ul><font size=1><b>
+Rotate XZ	Left Mouse<br>
+Pan	Middle Mouse or SHIFT + Left Mouse<br>
+Rotate XY	Right Mouse or ALT + Left Mouse<br>
+Zoom In/Out	Wheel Mouse or CTRL + Left Mouse<br>
+</b></font></ul>
+
+
+
+
+<?
+include('ddiver.3dviewer.php'); 
+
+?>
